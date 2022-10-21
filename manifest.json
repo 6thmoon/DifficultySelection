@@ -1,0 +1,10 @@
+{
+	"name": "DifficultySelection",
+	"version_number": "0.1.0",
+	"website_url": "https://github.com/6thmoon/DifficultySelection",
+	"description": 
+		"Choose which difficulty options are available/selected by default in the lobby menu.",
+	"dependencies": [
+		"bbepis-BepInExPack-5.4.2100"
+	]
+}
