@@ -13,11 +13,10 @@ After installing, launch the game in order to initialize the configuration file.
 Please note that identifiers in the configuration file use the internal names for difficulties rather than the ones you may be familiar with. However, each entry also includes the display name in the description.
 
 #### *Why would someone use this over existing alternatives that provide similar functionality?*
-
 Extra care has been taken to ensure this one is flexible and compatible with multiplayer lobbies, additional difficulties, and the *Eclipse* menu.
 
 #### *I have an issue to report. How can I contact the developer?* 
-Please provide bug reports or any other feedback on the [issues](https://github.com/6thmoon/DifficultySelection/issues) page. Feel free to check out my other [work](https://thunderstore.io/package/6thmoon) as well.
+Please provide bug reports or any other feedback on the [issues](https://github.com/6thmoon/DifficultySelection/issues) page. Feel free to check out my other [work](https://thunderstore.io/package/6thmoon/?ordering=top-rated) as well.
 
 ## Version History
 
