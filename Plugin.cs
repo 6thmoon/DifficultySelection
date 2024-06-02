@@ -9,14 +9,13 @@ using System.Security.Permissions;
 
 [assembly: AssemblyVersion(Local.Difficulty.Selection.Plugin.versionNumber)]
 [assembly: SecurityPermission(SecurityAction.RequestMinimum, SkipVerification = true)]
-		// Allow private member access via publicized assemblies.
 
 namespace Local.Difficulty.Selection
 {
 	[BepInPlugin("local.difficulty.selection", "DifficultySelection", versionNumber)]
 	public class Plugin : BaseUnityPlugin
 	{
-		public const string versionNumber = "0.1.0";
+		public const string versionNumber = "0.1.2";
 		private static ConfigFile configuration;
 
 		public void Awake()
@@ -27,10 +26,16 @@ namespace Local.Difficulty.Selection
 
 		[HarmonyPatch(typeof(RuleCatalog), nameof(RuleCatalog.Init))]
 		[HarmonyFinalizer]
-		private static void UpdateSelection(Exception __exception)
+		private static void Initialize(Exception __exception)
 		{
 			if ( __exception is object ) throw __exception;
+			else UpdateSelection();
+		}
 
+		[HarmonyPatch(typeof(PreGameController), nameof(PreGameController.ResolveChoiceMask))]
+		[HarmonyPrefix]
+		private static void UpdateSelection()
+		{
 			RuleDef rule = RuleCatalog.allRuleDefs?.FirstOrDefault();
 			var difficulties = rule?.choices;
 
