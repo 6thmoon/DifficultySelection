@@ -3,6 +3,7 @@ using BepInEx.Configuration;
 using HarmonyLib;
 using RoR2;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Security.Permissions;
@@ -15,7 +16,7 @@ namespace Local.Difficulty.Selection
 	[BepInPlugin("local.difficulty.selection", "DifficultySelection", versionNumber)]
 	public class Plugin : BaseUnityPlugin
 	{
-		public const string versionNumber = "0.1.2";
+		public const string versionNumber = "0.1.3";
 		private static ConfigFile configuration;
 
 		public void Awake()
@@ -37,7 +38,7 @@ namespace Local.Difficulty.Selection
 		private static void UpdateSelection()
 		{
 			RuleDef rule = RuleCatalog.allRuleDefs?.FirstOrDefault();
-			var difficulties = rule?.choices;
+			List<RuleChoiceDef> difficulties = rule?.choices;
 
 			if ( difficulties is null )
 			{
@@ -53,29 +54,31 @@ namespace Local.Difficulty.Selection
 							choice => choice.difficultyIndex == DifficultyIndex.Hard
 						)?.localName,
 					new ConfigDescription(
-							"If no other option is chosen in the lobby, "
-								+ "this one will be selected by default.",
+							"If no other option is chosen in the lobby,"
+								+ " this one will be selected by default.",
 							new AcceptableValueList<string>(options)
 				)).Value;
 
-			for ( int i = 0; i < difficulties.Count; ++i )
+			foreach ( RuleChoiceDef choice in difficulties )
 			{
-				RuleChoiceDef choice = difficulties[i];
+				var key = from letter in choice.localName where letter is not (
+						'=' or '\n' or '\t' or '\\' or '"' or '\'' or '[' or ']'
+					) select letter;
 
 				choice.excludeByDefault = configuration.Bind(
 						section: "Options",
-						key: choice.localName,
+						key: string.Join("", key),
 						description: "Adjust this value to "
 							+ ( choice.excludeByDefault ? "show" : "hide" ) + " the \""
 							+ Language.GetString(choice.tooltipNameToken)
 							+ "\" difficulty option in the lobby.",
-						defaultValue: ! choice.excludeByDefault ||
-								choice.difficultyIndex == DifficultyIndex.Eclipse8
+						defaultValue: choice.difficultyIndex is DifficultyIndex.Eclipse8
+								 || ! choice.excludeByDefault
 					).Value is false;
 
 				if ( defaultChoice == choice.localName )
 				{
-					rule.defaultChoiceIndex = i;
+					rule.defaultChoiceIndex = choice.localIndex;
 					choice.excludeByDefault = false;
 				}
 			}

@@ -20,8 +20,11 @@ Please provide bug reports or any other feedback on the [issues](https://github.
 
 ## Version History
 
+#### `0.1.3`
+- Sanitize identifiers for compatibility with certain difficulties.
+
 #### `0.1.2`
-- Improve **[OptionGenerator](https://thunderstore.io/package/6thmoon/OptionGenerator)** support.
+- Reload configuration upon entering the lobby.
 
 #### `0.1.1`
 - Update icon.
